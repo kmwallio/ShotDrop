@@ -24,7 +24,7 @@ router.post('/', function(req, res, next) {
                 if (login) {
                     req.session.user = username;
                     req.session.streamkey = rows["streamkey"];
-                    res.render('index', { title: 'ShotDrop', user: username, streamkey: rows["streamkey"], rooms: "" });
+                    res.render('index', { title: 'ShotDrop', user: username, streamkey: rows["streamkey"], photos: "", rooms: "" });
                 } else {
                     res.render('signup', { title: 'ShotDrop Not Logged In', registered: true, message: "Please check your username and password." });
                 }
