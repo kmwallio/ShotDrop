@@ -1,0 +1,10 @@
+<h1>Welcome <%= user %></h1>
+
+<h2>FTP Codes</h2>
+<% if (rooms) { %>
+    <% for (var i = 0; i < rooms.length; i++) { %>
+        <p><strong><tt><%= rooms[i].FtpCode %></tt></strong>: <a href="/ftp/delete/<%= rooms[i].id %>">Delete</a></p>
+    <% } %>
+<% } %>
+
+<p><a href="/ftp/create">Create Code</a></p>
