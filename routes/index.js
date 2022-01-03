@@ -21,12 +21,17 @@ router.get('/', function(req, res, next) {
       res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey, rooms: ""});
     } else {
       db.all("SELECT * FROM Ftps WHERE UserId=?", [rows["id"]], function(err, row2) {
-        if (row2 === undefined){
-          res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey, rooms: ""});
-        } else {
-          console.log(row2);
-          res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey, rooms: row2});
-        }
+        db.all("SELECT * FROM Images WHERE UserId=?", [rows["id"]], function(err, row3) {
+          var roomRes = row2;
+          var photoRes = row3;
+          if (row3 === undefined) {
+            photoRes = "";
+          }
+          if (row2 === undefined){
+            roomRes = "";
+          }
+          res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey, photos: photoRes, rooms: roomRes});
+        });
       });
     }
   });

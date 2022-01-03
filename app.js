@@ -17,7 +17,7 @@ var db = new sqlite3.Database('shot.db');
 db.serialize(function() {
     db.run("CREATE TABLE if not exists `Images` (`Src` TEXT, `UserId` INTEGER,`Id` INTEGER PRIMARY KEY AUTOINCREMENT);");
     db.run("CREATE TABLE if not exists `Users` ( `username` TEXT NOT NULL UNIQUE, `email` TEXT NOT NULL, `password` TEXT NOT NULL, `salt` TEXT NOT NULL, `streamkey` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT );");
-    db.run("CREATE TABLE if not exists `Ftps` ( `UserId` INTEGER NOT NULL, `FtpCode` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT );");
+    db.run("CREATE TABLE if not exists `Ftps` ( `UserId` INTEGER NOT NULL, `FtpCode` TEXT NOT NULL, `Enabled` INTEGER, `id` INTEGER PRIMARY KEY AUTOINCREMENT );");
 });
 
 const FtpSrv = require('ftp-srv');
@@ -34,7 +34,7 @@ ftpServer.on('login', (data, resolve, reject) => {
             return reject(new Error('Invalid username or password', 401));
         } else {
             console.log("User name found %s", data.username);
-            db.get("SELECT * FROM Ftps WHERE UserId=? AND FtpCode=?", [row["id"], data.password], function (err, rows) {
+            db.get("SELECT * FROM Ftps WHERE UserId=? AND FtpCode=? AND Enabled=1", [row["id"], data.password], function (err, rows) {
                 if (rows === undefined) {
                     console.log("FTP Code invalid");
                     return reject(new Error('Invalid username or password', 401));
@@ -50,22 +50,25 @@ ftpServer.on('login', (data, resolve, reject) => {
                                 if (error) {
                                     console.log(error);
                                 } else {
-                                    var target_org = path.join(appRoot.toString(), "photos", data.username, "org");
-                                    var target_preview = path.join(appRoot.toString(), "photos", data.username, "preview");
-                                    var fName = uuid.v4() + fileName.substring(fileName.lastIndexOf("."));
+                                    var target_org = path.join(appRoot.toString(), "images", data.username, "org");
+                                    var target_preview = path.join(appRoot.toString(), "images", data.username, "preview");
+                                    var imageUuid = uuid.v4();
+                                    var fName = imageUuid + ".jpeg";
                                     fs.mkdir(target_org, { recursive: true }, (err) => {
                                         if (!err) {
                                             fs.mkdir(target_preview, { recursive: true }, (err) => {
                                                 if (!err) {
                                                     fs.rename(fileName, path.join(target_org, fName), () => {
                                                         // open a file called "lenna.png"
-                                                        Jimp.read(path.join(target_org, fName), (err, photo) => {
-                                                            if (!err) {
-                                                                photo
-                                                                .resize(640, Jimp.AUTO) // resize
-                                                                .quality(75) // set JPEG quality
-                                                                .write(path.join(target_preview, fName)); // save
-                                                            }
+                                                        db.run("INSERT INTO Images (UserId, Src) VALUES (?, ?)", [row["id"], imageUuid], function() {
+                                                            Jimp.read(path.join(target_org, fName), (err, photo) => {
+                                                                if (!err) {
+                                                                    photo
+                                                                    .resize(640, Jimp.AUTO) // resize
+                                                                    .quality(75) // set JPEG quality
+                                                                    .write(path.join(target_preview, fName)); // save
+                                                                }
+                                                            });
                                                         });
                                                     });
                                                 }
@@ -109,7 +112,7 @@ app.use('/signup', signup);
 app.use('/photos', photos);
 app.use('/ftp', ftp);
 app.use('/login', login);
-app.use('/static', express.static('photos'))
+app.use('/static', express.static('images'))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

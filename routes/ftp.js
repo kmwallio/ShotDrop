@@ -37,6 +37,54 @@ router.get('/create', function(req, res, next) {
     });
 });
 
+router.get('/enable/:room', function(req, res, next){
+    var user = "";
+    var streamkey = "";
+    if (req.session.user && req.session.streamkey) {
+        user = req.session.user;
+        streamkey = req.session.streamkey;
+    } else {
+        console.log("User not logged in");
+        res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey});
+        return;
+    }
+
+    db.get("SELECT * FROM Users WHERE username=?", [user], function (err, rows) {
+        if (rows === undefined) {
+            console.log("Error for " + user + " got " + err);
+            res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey});
+        } else {
+            db.run("UPDATE Ftps SET Enabled=1 WHERE UserId=? AND id=?", [rows["id"], parseInt(req.params.room)], function() {
+                res.render('ftps', {title: "Enabled " + req.params.room });
+            });
+        }
+    });
+});
+
+router.get('/disable/:room', function(req, res, next){
+    var user = "";
+    var streamkey = "";
+    if (req.session.user && req.session.streamkey) {
+        user = req.session.user;
+        streamkey = req.session.streamkey;
+    } else {
+        console.log("User not logged in");
+        res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey});
+        return;
+    }
+
+    db.get("SELECT * FROM Users WHERE username=?", [user], function (err, rows) {
+        if (rows === undefined) {
+            console.log("Error for " + user + " got " + err);
+            res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey});
+        } else {
+            db.run("UPDATE Ftps SET Enabled=0 WHERE UserId=? AND id=?", [rows["id"], parseInt(req.params.room)], function() {
+                res.render('ftps', {title: "Disabled " + req.params.room });
+            });
+        }
+    });
+});
+
 router.get('/delete/:room', function(req, res, next){
     var user = "";
     var streamkey = "";

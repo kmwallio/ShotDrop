@@ -28,7 +28,10 @@ router.get('/', function(req, res, next) {
             res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey});
         }
     });
-    
+});
+
+router.get('/delete/:photo', function(req, res, next){
+
 });
 
 router.get('/:photo', function(req, res, next){
