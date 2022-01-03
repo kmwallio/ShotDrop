@@ -5,6 +5,7 @@ var path = require('path');
 var request = require('request');
 var fs = require('fs');
 var randomstring = require("randomstring");
+const appRoot = require('app-root-path');
 
 var db = new sqlite3.Database('shot.db');
 
