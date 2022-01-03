@@ -15,11 +15,7 @@
             <input type="submit" value="Login" class="btn btn-lg btn-primary btn-block">
         </form>
 <% } else { %>
-  <% if (photos) { %>
-    <%- include('usage.ejs', { user: user, streamkey: streamkey, photos: photos, rooms: rooms }); %>
-  <% } else { %>
-    <%- include('usage.ejs', { user: user, streamkey: streamkey, rooms: rooms }); %>
-  <% } %>
+  <%- include('usage.ejs', { user: user, streamkey: streamkey, photos: photos, rooms: rooms }); %>
 <% } %>
       </div>
     </main>

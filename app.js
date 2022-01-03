@@ -38,7 +38,7 @@ function getNetworks() {
 const resolverFunction = (address) => {
    const networks = getNetworks();
    for (const network in networks) {
-       if (new Netmask(network).contains(ip)) {
+       if (new Netmask(network).contains(address)) {
            return networks[network];
        }
    }
@@ -48,9 +48,9 @@ const resolverFunction = (address) => {
 const FtpSrv = require('ftp-srv');
 const port=8021;
 const ftpServer = new FtpSrv({
-    url: "ftp://137.184.4.162:" + port,
+    url: "ftp://0.0.0.0:" + port,
     anonymous: false,
-    pasv_url: "137.184.4.162"
+    pasv_url: resolverFunction
 });
 
 ftpServer.on('login', (data, resolve, reject) => { 
