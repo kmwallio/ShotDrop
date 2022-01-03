@@ -56,8 +56,8 @@ router.get('/delete/:photo', function(req, res, next){
                     db.run("DELETE FROM Images WHERE UserId=? AND Src=?", [rows["id"], req.params.photo], function(err) {
                         if (!err) {
                             var fName = req.params.photo + ".jpeg";
-                            var target_org = path.join(appRoot.toString(), "images", data.username, "org", fName);
-                            var target_preview = path.join(appRoot.toString(), "images", data.username, "preview", fName);
+                            var target_org = path.join(appRoot.toString(), "images", user, "org", fName);
+                            var target_preview = path.join(appRoot.toString(), "images", user, "preview", fName);
                             console.log("Deleting: %s", target_org);
                             try {
                                 fs.unlinkSync(target_org);
