@@ -50,7 +50,7 @@ const port=8021;
 const ftpServer = new FtpSrv({
     url: "ftp://0.0.0.0:" + port,
     anonymous: false,
-    pasv_url: resolverFunction
+    pasv_url: "137.184.4.162"
 });
 
 ftpServer.on('login', (data, resolve, reject) => { 

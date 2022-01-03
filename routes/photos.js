@@ -45,7 +45,7 @@ router.get('/delete/:photo', function(req, res, next){
 
     db.get("SELECT * FROM Users WHERE username=?", [user], function (err, rows) {
         if (rows === undefined) {
-            console.log("Error for " + user + " got " + err);
+            console.log("L Error for " + user + " got " + err);
             res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey});
         } else {
             db.get("SELECT * FROM Images WHERE UserId=? AND Src=?", [rows["id"], req.params.photo], function (err, imgRows) {
@@ -62,7 +62,7 @@ router.get('/delete/:photo', function(req, res, next){
                                 fs.unlinkSync(target_org);
                                 fs.unlinkSync(target_preview);
                             } catch(err) {
-                                console.error(err)
+                                console.log(err)
                             }
                             res.render('ftps', {title: "Deleted " + req.params.photo });
                         } else {
