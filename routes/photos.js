@@ -23,7 +23,7 @@ router.get('/', function(req, res, next) {
 
     db.get("SELECT * FROM Users WHERE username=?", [user], function (err, rows) {
         if (rows === undefined) {
-            console.log("Error for " + user + " got " + err);
+            console.error("Error for " + user + " got " + err);
             res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey});
         } else {
             res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey});
@@ -45,12 +45,12 @@ router.get('/delete/:photo', function(req, res, next){
 
     db.get("SELECT * FROM Users WHERE username=?", [user], function (err, rows) {
         if (rows === undefined) {
-            console.log("L Error for " + user + " got " + err);
+            console.error("L Error for " + user + " got " + err);
             res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey});
         } else {
             db.get("SELECT * FROM Images WHERE UserId=? AND Src=?", [rows["id"], req.params.photo], function (err, imgRows) {
                 if (imgRows === undefined) {
-                    console.log("Q Error for " + user + " got " + err);
+                    console.error("Q Error for " + user + " got " + err);
                     res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey});
                 } else {
                     db.run("DELETE FROM Images WHERE UserId=? AND Src=?", [rows["id"], req.params.photo], function(err) {
@@ -58,15 +58,16 @@ router.get('/delete/:photo', function(req, res, next){
                             var fName = req.params.photo + ".jpeg";
                             var target_org = path.join(appRoot.toString(), "images", data.username, "org", fName);
                             var target_preview = path.join(appRoot.toString(), "images", data.username, "preview", fName);
+                            console.log("Deleting: %s", target_org);
                             try {
                                 fs.unlinkSync(target_org);
                                 fs.unlinkSync(target_preview);
                             } catch(err) {
-                                console.log(err)
+                                console.error(err)
                             }
                             res.render('ftps', {title: "Deleted " + req.params.photo });
                         } else {
-                            console.log("R Error for " + user + " got " + err);
+                            console.error("R Error for " + user + " got " + err);
                             res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey});
                         }
                     });
