@@ -47,8 +47,9 @@ const resolverFunction = (address) => {
 
 const FtpSrv = require('ftp-srv');
 const port=8021;
+console.log ("Using: %s", resolverFunction("137.184.4.162"));
 const ftpServer = new FtpSrv({
-    url: "ftp://0.0.0.0:" + port,
+    url: "ftp://" + resolverFunction("137.184.4.162") + ":" + port,
     anonymous: false,
     pasv_url: "137.184.4.162"
 });
