@@ -16,7 +16,7 @@ router.get('/create', function(req, res, next) {
         streamkey = req.session.streamkey;
     } else {
         console.log("User not logged in");
-        res.render('index', { title: 'ParuParo' , user: user, streamkey: streamkey});
+        res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey});
         return;
     }
     var newRoom = randomstring.generate({

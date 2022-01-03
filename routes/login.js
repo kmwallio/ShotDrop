@@ -11,7 +11,7 @@ const saltRounds = 10;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('index', { title: 'ParuParo' });
+    res.render('index', { title: 'ShotDrop' });
 });
 
 router.post('/', function(req, res, next) {

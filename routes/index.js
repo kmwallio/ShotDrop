@@ -18,7 +18,7 @@ router.get('/', function(req, res, next) {
   }
   db.get("SELECT * FROM Users WHERE username=?", [user], function (err, rows) {
     if (rows === undefined) {
-      res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey, rooms: ""});
+      res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey, photos: "", rooms: ""});
     } else {
       db.all("SELECT * FROM Ftps WHERE UserId=?", [rows["id"]], function(err, row2) {
         db.all("SELECT * FROM Images WHERE UserId=?", [rows["id"]], function(err, row3) {
