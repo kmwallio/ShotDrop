@@ -3,7 +3,7 @@
 <% if (photos) { %>
     <% for (var i = 0; i < photos.length; i++) { %>
         <div>
-        <a href="/static/<%= user %>/org/<%= photos[i].Src %>.jpeg">
+        <a href="/static/<%= user %>/org/<%= photos[i].Src %>.jpeg" target="_blank">
             <img src="/static/<%= user %>/preview/<%= photos[i].Src %>.jpeg" />
         </a>
         <a href="/photos/delete/<%= photos[i].Src %>">Delete</a></div>
