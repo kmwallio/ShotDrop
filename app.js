@@ -11,6 +11,8 @@ var sqlite3 = require('sqlite3').verbose();
 const appRoot = require('app-root-path');
 var uuid = require('uuid');
 var Jimp = require('jimp');
+const { networkInterfaces } = require('os');
+const { Netmask } = require('netmask');
 
 var app = express();
 var db = new sqlite3.Database('shot.db');
@@ -20,11 +22,39 @@ db.serialize(function() {
     db.run("CREATE TABLE if not exists `Ftps` ( `UserId` INTEGER NOT NULL, `FtpCode` TEXT NOT NULL, `Enabled` INTEGER, `id` INTEGER PRIMARY KEY AUTOINCREMENT );");
 });
 
+const nets = networkInterfaces();
+function getNetworks() {
+   let networks = {};
+   for (const name of Object.keys(nets)) {
+       for (const net of nets[name]) {
+           if (net.family === 'IPv4' && !net.internal) {
+               networks[net.address + "/24"] = net.address
+           }
+       }
+   }
+   return networks;
+}
+
+const resolverFunction = (address) => {
+   // const networks = {
+   //     '$GATEWAY_IP/32': `${public_ip}`, 
+   //     '10.0.0.0/8'    : `${lan_ip}`
+   // } 
+   const networks = getNetworks();
+   for (const network in networks) {
+       if (new Netmask(network).contains(ip)) {
+           return networks[network];
+       }
+   }
+   return "0.0.0.0";
+}
+
 const FtpSrv = require('ftp-srv');
 const port=8021;
 const ftpServer = new FtpSrv({
     url: "ftp://0.0.0.0:" + port,
-    anonymous: false
+    anonymous: false,
+    pasv_url: resolverFunction
 });
 
 ftpServer.on('login', (data, resolve, reject) => { 

@@ -18,6 +18,8 @@
     "jimp": "^0.16.1",
     "loader": "^2.1.1",
     "morgan": "^1.10.0",
+    "netmask": "^2.0.2",
+    "os": "^0.1.2",
     "randomstring": "^1.2.1",
     "serve-favicon": "^2.5.0",
     "sqlite3": "^5.0.2",
