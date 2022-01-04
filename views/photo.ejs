@@ -16,11 +16,28 @@
       .lbox img, .container img, .container-fluid img {
           width: 100%;
       }
+
+      .lbox, body .modal-dialog { /* Width */
+          max-width: 100%;
+          width: auto !important;
+          display: inline-block;
+      }
+
+      .modal {
+        z-index: -1;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-open .modal {
+        z-index: 1050;
+      }
     </style>
   </head>
   <body>
     <!-- Modal -->
-    <div class="modal fade bd-example-modal-lg lbox" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width: 95%;">
+    <div class="modal fade bd-example-modal-lg modal-lg lbox" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
