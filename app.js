@@ -144,6 +144,7 @@ var ftp = require('./routes/ftp');
 app.use('/', index);
 app.use('/signup', signup);
 app.use('/photos', photos);
+app.use('/p', photos);
 app.use('/ftp', ftp);
 app.use('/login', login);
 app.use('/static', express.static('images'))
