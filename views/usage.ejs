@@ -3,9 +3,9 @@
 <% if (photos) { %>
     <div class="row">
     <% for (var i = 0; i < photos.length; i++) { %>
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm" style="width: 480px">
-                <div class="preview card-img-top" style="width: 350px">
+        <div class="col-md-3">
+            <div class="card mb-3 shadow-sm">
+                <div class="preview card-img-top">
                     <a href="/static/<%= user %>/org/<%= photos[i].Src %>.jpeg" target="_blank">
                         <img src="/static/<%= user %>/preview/<%= photos[i].Src %>.jpeg" />
                     </a>
