@@ -54,6 +54,12 @@ const ftpServer = new FtpSrv({
     pasv_url: "137.184.4.162"
 });
 
+const cachedJpegDecoder = Jimp.decoders['image/jpeg'];
+Jimp.decoders['image/jpeg'] = (data) => {
+  const userOpts = { maxMemoryUsageInMB: 1024 };
+  return cachedJpegDecoder(data, userOpts);
+}
+
 ftpServer.on('login', (data, resolve, reject) => { 
     db.get("SELECT * FROM Users WHERE username=?", [data.username], function (err, row) {
         if (row === undefined) {
