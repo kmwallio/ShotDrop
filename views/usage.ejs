@@ -1,19 +1,25 @@
 <h1>Welcome <%= user %></h1>
 
 <% if (photos) { %>
+    <div class="row">
     <% for (var i = 0; i < photos.length; i++) { %>
         <div class="col-md-4">
             <div class="card mb-4 shadow-sm" style="width: 480px">
-                <div class="slider preview card-img-top" style="width: 350px">
+                <div class="preview card-img-top" style="width: 350px">
                     <a href="/static/<%= user %>/org/<%= photos[i].Src %>.jpeg" target="_blank">
                         <img src="/static/<%= user %>/preview/<%= photos[i].Src %>.jpeg" />
                     </a>
                 </div>
-                <a href="/p/<%= photos[i].Src %>" class="btn btn-sm btn-outline-primary">Share</a>
-                <a href="/photos/delete/<%= photos[i].Src %>" class="btn btn-sm btn-outline-danger">Delete</a>
+                <div class="card-body">
+                    <div class="btn-group">
+                        <a href="/p/<%= photos[i].Src %>" class="btn btn-sm btn-outline-primary">Share</a>
+                        <a href="/photos/delete/<%= photos[i].Src %>" class="btn btn-sm btn-outline-danger">Delete</a>
+                    </div>
+                </div>
             </div>
         </div>
     <% } %>
+    </div>
 <% } %>
 
 <h2>FTP Codes</h2>
