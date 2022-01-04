@@ -3,7 +3,50 @@
   <head>
     <title><%= title %></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="/stylesheets/style.css">
+    <style>
+      .container, .container-fluid {
+          padding-top: 1em;
+      }
+      .container img, .container-fluid img {
+          width: 100%;
+      }
+
+      .entry-date{display:block;width:140px;overflow:hidden;text-align:right;float:left;font-size:.75em;color:rgba(0,0,0,0.2);margin-left:-150px}
+      .entry-title{font-size:1.7em;}
+
+      * {box-sizing: border-box;}
+  
+      .theme-preview img {
+          border-radius: 8px 8px 0 0;
+          box-shadow: 0 0 5px #777;
+      }
+
+      .center-images {
+          text-align: center;
+      }
+
+      .center-images img {
+          max-width: 350px;
+          min-width: 150px;
+          width: 50%;
+          padding: 0px;
+          display: inline-block;
+          margin: 0 auto 0 auto;
+          border-radius: 8px 8px 0 0;
+          box-shadow: 0 0 5px #777;
+      }
+  
+      .normal-images img {
+          max-width: 48%;
+          min-width: 150px;
+          width: 50%;
+          padding: 0px;
+          display: inline-block;
+          margin: 0 auto 0 auto;
+          border-radius: 8px 8px 0 0;
+          box-shadow: 0 0 5px #777;
+      }
+  </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
@@ -20,3 +63,4 @@
         </ul>
       </div>
     </nav>
+    <br /><br /><br />

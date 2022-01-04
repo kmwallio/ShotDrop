@@ -21,7 +21,7 @@ router.get('/', function(req, res, next) {
       res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey, photos: "", rooms: ""});
     } else {
       db.all("SELECT * FROM Ftps WHERE UserId=?", [rows["id"]], function(err, row2) {
-        db.all("SELECT * FROM Images WHERE UserId=?", [rows["id"]], function(err, row3) {
+        db.all("SELECT * FROM Images WHERE UserId=? ORDER BY id DESC", [rows["id"]], function(err, row3) {
           var roomRes = row2;
           var photoRes = row3;
           if (row3 === undefined) {

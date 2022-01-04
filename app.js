@@ -78,27 +78,34 @@ ftpServer.on('login', (data, resolve, reject) => {
                                     console.log(error);
                                 } else {
                                     var target_org = path.join(appRoot.toString(), "images", data.username, "org");
+                                    var target_hd = path.join(appRoot.toString(), "images", data.username, "1080");
                                     var target_preview = path.join(appRoot.toString(), "images", data.username, "preview");
                                     var imageUuid = uuid.v4();
                                     var fName = imageUuid + ".jpeg";
                                     fs.mkdir(target_org, { recursive: true }, (err) => {
                                         if (!err) {
                                             fs.mkdir(target_preview, { recursive: true }, (err) => {
-                                                if (!err) {
-                                                    fs.rename(fileName, path.join(target_org, fName), () => {
-                                                        // open a file called "lenna.png"
-                                                        db.run("INSERT INTO Images (UserId, Src) VALUES (?, ?)", [row["id"], imageUuid], function() {
-                                                            Jimp.read(path.join(target_org, fName), (err, photo) => {
-                                                                if (!err) {
-                                                                    photo
-                                                                    .resize(640, Jimp.AUTO) // resize
-                                                                    .quality(75) // set JPEG quality
-                                                                    .write(path.join(target_preview, fName)); // save
-                                                                }
+                                                fs.mkdir(target_hd, { recursive: true }, (err) => {
+                                                    if (!err) {
+                                                        fs.rename(fileName, path.join(target_org, fName), () => {
+                                                            db.run("INSERT INTO Images (UserId, Src) VALUES (?, ?)", [row["id"], imageUuid], function() {
+                                                                Jimp.read(path.join(target_org, fName), (err, photo) => {
+                                                                    if (!err) {
+                                                                        photo
+                                                                        .resize(640, Jimp.AUTO) // resize
+                                                                        .quality(75) // set JPEG quality
+                                                                        .write(path.join(target_preview, fName)); // save
+
+                                                                        photo
+                                                                        .resize(Jimp.AUTO, 1080) // resize
+                                                                        .quality(75) // set JPEG quality
+                                                                        .write(path.join(target_hd, fName)); // save
+                                                                    }
+                                                                });
                                                             });
                                                         });
-                                                    });
-                                                }
+                                                    }
+                                                });
                                             });
                                         }
                                     });

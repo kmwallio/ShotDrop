@@ -58,10 +58,12 @@ router.get('/delete/:photo', function(req, res, next){
                             var fName = req.params.photo + ".jpeg";
                             var target_org = path.join(appRoot.toString(), "images", user, "org", fName);
                             var target_preview = path.join(appRoot.toString(), "images", user, "preview", fName);
+                            var target_hd = path.join(appRoot.toString(), "images", user, "1080", fName);
                             console.log("Deleting: %s", target_org);
                             try {
                                 fs.unlinkSync(target_org);
                                 fs.unlinkSync(target_preview);
+                                fs.unlinkSync(target_hd);
                             } catch(err) {
                                 console.error(err)
                             }
@@ -77,8 +79,14 @@ router.get('/delete/:photo', function(req, res, next){
     });
 });
 
-router.get('/:photo', function(req, res, next){
-
+router.get('/p/:photo', function(req, res, next){
+    db.get("SELECT * FROM Images WHERE Src=?", [req.params.photo], function (err, imgRows) {
+        if (imgRows !== undefined) {
+            db.get("SELECT * FROM Users WHERE id=?", [imgRows["UserId"]], function (err, row) {
+                res.render('photo', { title: 'by ' + row["username"], photo: req.params.photo, user: row["username"] });
+            });
+        }
+    });
 });
 
 module.exports = router;
