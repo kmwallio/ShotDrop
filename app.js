@@ -82,6 +82,7 @@ ftpServer.on('login', (data, resolve, reject) => {
                                     var target_preview = path.join(appRoot.toString(), "images", data.username, "preview");
                                     var imageUuid = uuid.v4();
                                     var fName = imageUuid + ".jpeg";
+                                    console.log("Moving: %s to %s", fileName, fName);
                                     fs.mkdir(target_org, { recursive: true }, (err) => {
                                         if (!err) {
                                             fs.mkdir(target_preview, { recursive: true }, (err) => {
@@ -89,19 +90,31 @@ ftpServer.on('login', (data, resolve, reject) => {
                                                     if (!err) {
                                                         fs.rename(fileName, path.join(target_org, fName), () => {
                                                             db.run("INSERT INTO Images (UserId, Src) VALUES (?, ?)", [row["id"], imageUuid], function() {
-                                                                Jimp.read(path.join(target_org, fName), (err, photo) => {
-                                                                    if (!err) {
-                                                                        photo
-                                                                        .resize(640, Jimp.AUTO) // resize
-                                                                        .quality(75) // set JPEG quality
-                                                                        .write(path.join(target_preview, fName)); // save
+                                                                try {
+                                                                    Jimp.read(path.join(target_org, fName), (err, photo) => {
+                                                                        if (!err) {
+                                                                            photo
+                                                                            .resize(640, Jimp.AUTO) // resize
+                                                                            .quality(75) // set JPEG quality
+                                                                            .write(path.join(target_preview, fName)); // save
+                                                                        }
+                                                                    });
+                                                                } catch(err) {
+                                                                    console.error(err)
+                                                                }
 
-                                                                        photo
-                                                                        .resize(Jimp.AUTO, 1080) // resize
-                                                                        .quality(75) // set JPEG quality
-                                                                        .write(path.join(target_hd, fName)); // save
-                                                                    }
-                                                                });
+                                                                try {
+                                                                    Jimp.read(path.join(target_org, fName), (err, photo) => {
+                                                                        if (!err) {
+                                                                            photo
+                                                                            .resize(Jimp.AUTO, 1080) // resize
+                                                                            .quality(75) // set JPEG quality
+                                                                            .write(path.join(target_hd, fName)); // save
+                                                                        }
+                                                                    });
+                                                                } catch(err) {
+                                                                    console.error(err)
+                                                                }
                                                             });
                                                         });
                                                     }
