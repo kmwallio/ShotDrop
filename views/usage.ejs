@@ -31,7 +31,7 @@
                 </div>
                 <div class="card-body">
                     <div class="btn-group">
-                        <a href="http://twitter.com/home?status=<%= tweetUrl %>">Tweet</a>
+                        <a href="http://twitter.com/home?status=<%= encodeURIComponent(tweetUrl) %>">Tweet</a>
                         <a href="/p/<%= photos[i].Src %>" class="btn btn-sm btn-outline-primary">Share</a>
                         <a href="/photos/delete/<%= photos[i].Src %>" class="btn btn-sm btn-outline-danger">Delete</a>
                     </div>
