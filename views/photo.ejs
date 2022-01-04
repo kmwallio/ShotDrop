@@ -37,11 +37,11 @@
   </head>
   <body>
     <!-- Modal -->
-    <div class="modal fade bd-example-modal-lg modal-lg lbox" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade bd-example-modal-lg modal-lg lbox" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="photoModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel"><%= title %></h5>
+            <h5 class="modal-title" id="photoModalLabel"><%= title %></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -64,7 +64,7 @@
 
     <main role="main" class="container">
       <div class="content text-center">
-        <a href="#" data-toggle="modal" data-target="#exampleModal">
+        <a href="#" data-toggle="modal" data-target="#photoModal">
           <img src="/static/<%= user %>/1080/<%= photo %>.jpeg" class="img-thumbnail" />
         </a>
       </div>
