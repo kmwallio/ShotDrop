@@ -18,7 +18,7 @@ router.get('/', function(req, res, next) {
   }
   db.get("SELECT * FROM Users WHERE username=?", [user], function (err, rows) {
     if (rows === undefined) {
-      res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey, photos: "", rooms: ""});
+      res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey, host_url: req.protocol + '://' + req.get('host'), photos: "", rooms: ""});
     } else {
       db.all("SELECT * FROM Ftps WHERE UserId=?", [rows["id"]], function(err, row2) {
         db.all("SELECT * FROM Images WHERE UserId=? ORDER BY id DESC", [rows["id"]], function(err, row3) {
@@ -30,7 +30,7 @@ router.get('/', function(req, res, next) {
           if (row2 === undefined){
             roomRes = "";
           }
-          res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey, photos: photoRes, rooms: roomRes});
+          res.render('index', { title: 'ShotDrop' , user: user, streamkey: streamkey, host_url: req.protocol + '://' + req.get('host'), photos: photoRes, rooms: roomRes});
         });
       });
     }

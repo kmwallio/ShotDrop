@@ -3,6 +3,7 @@
 <% if (photos) { %>
     <div class="row">
     <% for (var i = 0; i < photos.length; i++) { %>
+        <% var tweetUrl = encodeURIComponent(host_url + "/p/" + photos[i].Src); %>
         <div class="modal fade bd-example-modal-lg modal-lg lbox" id="<%= photos[i].Src %>Modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
@@ -30,6 +31,7 @@
                 </div>
                 <div class="card-body">
                     <div class="btn-group">
+                        <a href="http://twitter.com/home?status=<%= tweetUrl %>">Tweet</a>
                         <a href="/p/<%= photos[i].Src %>" class="btn btn-sm btn-outline-primary">Share</a>
                         <a href="/photos/delete/<%= photos[i].Src %>" class="btn btn-sm btn-outline-danger">Delete</a>
                     </div>
