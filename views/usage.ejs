@@ -1,27 +1,61 @@
 <h1>Welcome <%= user %></h1>
 
 <% if (photos) { %>
-    <div class="row">
     <% for (var i = 0; i < photos.length; i++) { %>
-        <% var tweetUrl = encodeURIComponent(host_url + "/p/" + photos[i].Src); %>
-        <div class="modal fade bd-example-modal-lg modal-lg lbox" id="<%= photos[i].Src %>Modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <img src="/static/<%= user %>/preview/<%= photos[i].Src %>.jpeg" />
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-              </div>
+    <div class="modal fade bd-example-modal-lg modal-lg lbox" id="<%= photos[i].Src %>Modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img src="/static/<%= user %>/preview/<%= photos[i].Src %>.jpeg" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
             </div>
         </div>
+    </div>
+    <% } %>
+<% } %>
 
+<div class="modal fade bd-example-modal-lg modal-lg lbox" id="FtpModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <% if (rooms) { %>
+                <% for (var i = 0; i < rooms.length; i++) { %>
+                    <p>
+                    <% if (rooms[i].Enabled == 1) { %>
+                        <strong><tt><%= rooms[i].FtpCode %></tt></strong>:
+                        <a href="/ftp/disable/<%= rooms[i].id %>">Disable</a>
+                    <% } else { %>
+                        <tt><%= rooms[i].FtpCode %></tt>:
+                        <a href="/ftp/enable/<%= rooms[i].id %>">Enable</a>
+                    <% } %>
+                    <a href="/ftp/delete/<%= rooms[i].id %>">Delete</a></p>
+                <% } %>
+            <% } %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="row">
+<% if (photos) { %>
+    <% for (var i = 0; i < photos.length; i++) { %>
+        <% var tweetUrl = encodeURIComponent(host_url + "/p/" + photos[i].Src); %>
         <div class="col-md-3">
             <div class="card mb-3 shadow-sm">
                 <div class="preview card-img-top">
@@ -39,22 +73,18 @@
             </div>
         </div>
     <% } %>
+<% } %>
+
+<div class="col-md-3">
+    <div class="card mb-3 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">FTP Codes</h5>
+            <div class="btn-group"></div>
+                <a href="/ftp/create" class="btn btn-sm btn-outline-primary">Create Code</a>
+                <a href="#" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#FtpModal">Show Codes</a>
+            </div>
+        </div>
     </div>
-<% } %>
+</div>
 
-<h2>FTP Codes</h2>
-<% if (rooms) { %>
-    <% for (var i = 0; i < rooms.length; i++) { %>
-        <p>
-        <% if (rooms[i].Enabled == 1) { %>
-            <strong><tt><%= rooms[i].FtpCode %></tt></strong>:
-            <a href="/ftp/disable/<%= rooms[i].id %>">Disable</a>
-        <% } else { %>
-            <tt><%= rooms[i].FtpCode %></tt>:
-            <a href="/ftp/enable/<%= rooms[i].id %>">Enable</a>
-        <% } %>
-        <a href="/ftp/delete/<%= rooms[i].id %>">Delete</a></p>
-    <% } %>
-<% } %>
-
-<p><a href="/ftp/create">Create Code</a></p>
+</div>
