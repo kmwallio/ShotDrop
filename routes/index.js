@@ -41,7 +41,7 @@ router.get('/p/:photo', function(req, res, next){
   db.get("SELECT * FROM Images WHERE Src=?", [req.params.photo], function (err, imgRows) {
       if (imgRows !== undefined) {
           db.get("SELECT * FROM Users WHERE id=?", [imgRows["UserId"]], function (err, row) {
-              res.render('photo', { title: 'by ' + row["username"], photo: req.params.photo, user: row["username"] });
+              res.render('photo', { title: 'by ' + row["username"], photo: req.params.photo, user: row["username"], host_url: req.protocol + '://' + req.get('host') });
           });
       }
   });
