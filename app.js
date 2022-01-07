@@ -96,31 +96,47 @@ ftpServer.on('login', (data, resolve, reject) => {
                                                     if (!err) {
                                                         fs.rename(fileName, path.join(target_org, fName), () => {
                                                             db.run("INSERT INTO Images (UserId, Src) VALUES (?, ?)", [row["id"], imageUuid], function() {
-                                                                try {
-                                                                    Jimp.read(path.join(target_org, fName), (err, photo) => {
-                                                                        if (!err) {
-                                                                            photo
-                                                                            .resize(640, Jimp.AUTO) // resize
-                                                                            .quality(75) // set JPEG quality
-                                                                            .write(path.join(target_preview, fName)); // save
-                                                                        }
-                                                                    });
-                                                                } catch(err) {
-                                                                    console.error(err)
-                                                                }
 
-                                                                try {
-                                                                    Jimp.read(path.join(target_org, fName), (err, photo) => {
-                                                                        if (!err) {
-                                                                            photo
-                                                                            .resize(Jimp.AUTO, 1080) // resize
-                                                                            .quality(75) // set JPEG quality
-                                                                            .write(path.join(target_hd, fName)); // save
-                                                                        }
+                                                                const pFile = spawn('node',
+                                                                    [
+                                                                        path.join(appRoot.toString(), "resize.js"),
+                                                                        path.join(target_org, fName),
+                                                                        path.join(target_preview, fName),
+                                                                        "640",
+                                                                        "AUTO"
+                                                                    ],
+                                                                    {
+                                                                        cwd: appRoot.toString()
                                                                     });
-                                                                } catch(err) {
-                                                                    console.error(err)
-                                                                }
+
+                                                                pFile.stdout.on('data', (data) => {
+                                                                    console.log(data.toString('utf8').replace(/[\n\r]/g, ''));
+                                                                });
+                                                                pFile.stderr.on('data', (data) => {
+                                                                    console.error(data.toString('utf8').replace(/[\n\r]/g, ''));
+                                                                });
+                                                                pFile.on('close', (code) => {
+                                                                    const p1080File = spawn('node',
+                                                                    [
+                                                                        path.join(appRoot.toString(), "resize.js"),
+                                                                        path.join(target_org, fName),
+                                                                        path.join(target_preview, fName),
+                                                                        "AUTO",
+                                                                        "1080"
+                                                                    ],
+                                                                    {
+                                                                        cwd: appRoot.toString()
+                                                                    });
+
+                                                                    p1080File.stdout.on('data', (data) => {
+                                                                        console.log(data.toString('utf8').replace(/[\n\r]/g, ''));
+                                                                    });
+                                                                    p1080File.stderr.on('data', (data) => {
+                                                                        console.error(data.toString('utf8').replace(/[\n\r]/g, ''));
+                                                                    });
+                                                                    p1080File.on('close', (code) => {
+                                                                    });
+                                                                });
                                                             });
                                                         });
                                                     }
