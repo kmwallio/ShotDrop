@@ -5,29 +5,19 @@ var path = require('path');
 var logger = require('morgan');
 const appRoot = require('app-root-path');
 var uuid = require('uuid');
-var Jimp = require('jimp');
+var sharp = require('sharp');
 
 const myArgs = process.argv.slice(2);
 
 console.log("Got: %s", myArgs);
 
-const cachedJpegDecoder = Jimp.decoders['image/jpeg'];
-Jimp.decoders['image/jpeg'] = (data) => {
-  const userOpts = { maxMemoryUsageInMB: 1024 };
-  return cachedJpegDecoder(data, userOpts);
-}
-
 try {
-    Jimp.read(myArgs[0], (err, photo) => {
-        if (!err) {
-            photo
-            .resize((myArgs[2] == "AUTO") ? Jimp.AUTO : parseInt(myArgs[2]), (myArgs[3] == "AUTO") ? Jimp.AUTO : parseInt(myArgs[3])) // resize
-            .quality(75) // set JPEG quality
-            .write(myArgs[1]); // save
-        } else {
-            console.error(err);
-        }
-    });
+    sharp(myArgs[0])
+        .resize({
+            width: (myArgs[2] == "AUTO") ? null : parseInt(myArgs[2]),
+            height: (myArgs[3] == "AUTO") ? null : parseInt(myArgs[3])
+         }) // resize
+        .toFile(myArgs[1]);
 } catch(err) {
     console.error(err);
 }
