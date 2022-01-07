@@ -114,7 +114,7 @@ ftpServer.on('login', (data, resolve, reject) => {
                                                                     [
                                                                         path.join(appRoot.toString(), "resize.js"),
                                                                         path.join(target_org, fName),
-                                                                        path.join(target_preview, fName),
+                                                                        path.join(target_hd, fName),
                                                                         "AUTO",
                                                                         "1080"
                                                                     ]);
