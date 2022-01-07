@@ -13,6 +13,7 @@ var uuid = require('uuid');
 var Jimp = require('jimp');
 const { networkInterfaces } = require('os');
 const { Netmask } = require('netmask');
+const spawn = require('child_process').spawn;
 
 var app = express();
 var db = new sqlite3.Database('shot.db');
