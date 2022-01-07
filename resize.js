@@ -9,6 +9,8 @@ var Jimp = require('jimp');
 
 const myArgs = process.argv.slice(2);
 
+console.log("Got: %s", myArgs);
+
 try {
     Jimp.read(myArgs[0], (err, photo) => {
         if (!err) {
@@ -16,8 +18,10 @@ try {
             .resize((myArgs[2] == "AUTO") ? Jimp.AUTO : parseInt(myArgs[2]), (myArgs[3] == "AUTO") ? Jimp.AUTO : parseInt(myArgs[3])) // resize
             .quality(75) // set JPEG quality
             .write(myArgs[1]); // save
+        } else {
+            console.error(err);
         }
     });
 } catch(err) {
-    console.error(err)
+    console.error(err);
 }
