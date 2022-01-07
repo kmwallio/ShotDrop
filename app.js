@@ -107,10 +107,7 @@ ftpServer.on('login', (data, resolve, reject) => {
                                                                         path.join(target_preview, fName),
                                                                         "640",
                                                                         "AUTO"
-                                                                    ],
-                                                                    {
-                                                                        cwd: appRoot.toString()
-                                                                    });
+                                                                    ]);
 
                                                                 pFile.stdout.on('data', (data) => {
                                                                     console.log(data.toString('utf8').replace(/[\n\r]/g, ''));
@@ -119,6 +116,7 @@ ftpServer.on('login', (data, resolve, reject) => {
                                                                     console.error(data.toString('utf8').replace(/[\n\r]/g, ''));
                                                                 });
                                                                 pFile.on('close', (code) => {
+                                                                    console.log("On Close: " + code);
                                                                     const p1080File = spawn('node',
                                                                     [
                                                                         path.join(appRoot.toString(), "resize.js"),
@@ -126,10 +124,7 @@ ftpServer.on('login', (data, resolve, reject) => {
                                                                         path.join(target_preview, fName),
                                                                         "AUTO",
                                                                         "1080"
-                                                                    ],
-                                                                    {
-                                                                        cwd: appRoot.toString()
-                                                                    });
+                                                                    ]);
 
                                                                     p1080File.stdout.on('data', (data) => {
                                                                         console.log(data.toString('utf8').replace(/[\n\r]/g, ''));
@@ -137,7 +132,8 @@ ftpServer.on('login', (data, resolve, reject) => {
                                                                     p1080File.stderr.on('data', (data) => {
                                                                         console.error(data.toString('utf8').replace(/[\n\r]/g, ''));
                                                                     });
-                                                                    p1080File.on('close', (code) => {
+                                                                    p1080File.on('close', (code2) => {
+                                                                        console.log("On Close: " + code2);
                                                                     });
                                                                 });
                                                             });
