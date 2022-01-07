@@ -45,13 +45,15 @@ const resolverFunction = (address) => {
    return "0.0.0.0";
 }
 
+var IPs = Object.values(require('os').networkInterfaces()).reduce((r, list) => r.concat(list.reduce((rr, i) => rr.concat(i.family==='IPv4' && !i.internal && i.address || []), [])), []);
+
 const FtpSrv = require('ftp-srv');
 const port=8021;
-console.log ("Using: %s", resolverFunction("137.184.4.162"));
+console.log ("Using: %s", resolverFunction(IPs[0]));
 const ftpServer = new FtpSrv({
-    url: "ftp://" + resolverFunction("137.184.4.162") + ":" + port,
+    url: "ftp://" + resolverFunction(IPs[0]) + ":" + port,
     anonymous: false,
-    pasv_url: "137.184.4.162"
+    pasv_url: IPs[0]
 });
 
 const cachedJpegDecoder = Jimp.decoders['image/jpeg'];
