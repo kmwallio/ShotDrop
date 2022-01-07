@@ -11,6 +11,12 @@ const myArgs = process.argv.slice(2);
 
 console.log("Got: %s", myArgs);
 
+const cachedJpegDecoder = Jimp.decoders['image/jpeg'];
+Jimp.decoders['image/jpeg'] = (data) => {
+  const userOpts = { maxMemoryUsageInMB: 1024 };
+  return cachedJpegDecoder(data, userOpts);
+}
+
 try {
     Jimp.read(myArgs[0], (err, photo) => {
         if (!err) {

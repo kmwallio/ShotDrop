@@ -10,7 +10,6 @@ var cookieSession = require('cookie-session');
 var sqlite3 = require('sqlite3').verbose();
 const appRoot = require('app-root-path');
 var uuid = require('uuid');
-var Jimp = require('jimp');
 const { networkInterfaces } = require('os');
 const { Netmask } = require('netmask');
 const spawn = require('child_process').spawn;
@@ -56,12 +55,6 @@ const ftpServer = new FtpSrv({
     anonymous: false,
     pasv_url: IPs[0]
 });
-
-const cachedJpegDecoder = Jimp.decoders['image/jpeg'];
-Jimp.decoders['image/jpeg'] = (data) => {
-  const userOpts = { maxMemoryUsageInMB: 1024 };
-  return cachedJpegDecoder(data, userOpts);
-}
 
 ftpServer.on('login', (data, resolve, reject) => { 
     db.get("SELECT * FROM Users WHERE username=?", [data.username], function (err, row) {
